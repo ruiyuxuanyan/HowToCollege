@@ -45,8 +45,25 @@ jobs:
         run: |
           test -f site/index.html
           test -f site/index.json
-          ls site/body | wc -l
-          node -e "const d=require('./site/index.json'); if(d.total!==128) { console.error('文章数不是 128：'+d.total); process.exit(1); } console.log('OK', d.total, '篇');"
+          test -f site/cover.png
+          echo "分类包数量：$(ls site/body | wc -l)"
+          node -e "
+            const fs = require('fs');
+            const d = require('./site/index.json');
+            // 不写死篇数：与仓库内实际 Markdown 数量比对，防止构建漏读或重复
+            const dirs = fs.readdirSync('.').filter(x => /^\d\d-/.test(x) && fs.statSync(x).isDirectory());
+            let actual = 0;
+            for (const dir of dirs) {
+              actual += fs.readdirSync(dir).filter(f => f.endsWith('.md') && f !== 'README.md').length;
+            }
+            const problems = [];
+            if (d.total !== actual) problems.push('索引篇数 ' + d.total + ' 与实际 Markdown 数 ' + actual + ' 不一致');
+            if (d.categories.length !== dirs.length) problems.push('分类数不一致');
+            const noSummary = d.articles.filter(a => !a.summary).length;
+            if (noSummary) problems.push(noSummary + ' 篇缺一句话概括');
+            if (problems.length) { console.error('构建校验失败：\n  ' + problems.join('\n  ')); process.exit(1); }
+            console.log('OK · ' + d.total + ' 篇 · ' + d.categories.length + ' 个分类');
+          "
 
       - uses: actions/upload-pages-artifact@v3
         with:
