@@ -10,8 +10,8 @@
 **在线版**：https://ruiyuxuanyan.github.io/HowToCollege/ （可筛选、可搜索）
 
 [![篇目](https://img.shields.io/badge/%E7%AF%87%E7%9B%AE-133%20%E7%AF%87-18794e?style=flat-square)](#内容分类)
-[![来源](https://img.shields.io/badge/%E6%9D%A5%E6%BA%90%E6%A0%87%E6%B3%A8-%E6%B3%95%E8%A7%84%20428%20%C2%B7%20%E5%AE%98%E6%96%B9%20301-3451b2?style=flat-square)](#三个核心设计)
-[![待核实](https://img.shields.io/badge/%E5%BE%85%E6%A0%B8%E5%AE%9E-256%20%E5%A4%84-915930?style=flat-square)](#三个核心设计)
+[![来源标注](https://img.shields.io/badge/%E6%9D%A5%E6%BA%90%E6%A0%87%E6%B3%A8-%E6%B3%95%E8%A7%84%20423%20%C2%B7%20%E5%AE%98%E6%96%B9%20317-3451b2?style=flat-square)](#三个核心设计)
+[![待核实](https://img.shields.io/badge/%E5%BE%85%E6%A0%B8%E5%AE%9E-118%20%E5%A4%84-915930?style=flat-square)](#三个核心设计)
 [![许可](https://img.shields.io/badge/%E6%AD%A3%E6%96%87-CC%20BY%204.0-565a5f?style=flat-square)](LICENSE)
 
 ---
