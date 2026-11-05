@@ -250,8 +250,8 @@ college-student-guide/
 
 ## 许可
 
-- 正文内容：[CC BY 4.0](LICENSE)——可以转载、改编、商用，注明出处即可
-- 代码与脚本（如有）：MIT
+- **正文内容**（各分类目录下的 Markdown 与 `docs/`）：[CC BY 4.0](LICENSE)——可以转载、改编、商用，注明出处即可
+- **代码与脚本**（如后续添加构建工具）：[MIT](LICENSE-CODE)
 
 ---
 
