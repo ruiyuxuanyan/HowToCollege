@@ -31,7 +31,7 @@ aside{
   position:sticky;top:0;height:100vh;overflow-y:auto;
 }
 aside h1{font-size:19px;margin:0 0 4px;letter-spacing:.02em}
-aside .cover{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line);margin-bottom:16px}
+aside .cover{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line);margin-bottom:14px}
 aside .tag{font-size:12px;color:var(--muted);margin-bottom:22px}
 
 .grp{margin-bottom:26px}
@@ -57,6 +57,7 @@ aside .tag{font-size:12px;color:var(--muted);margin-bottom:22px}
 
 /* 主区 */
 main{flex:1;min-width:0;padding:30px 40px 100px}
+.hero{display:block;width:100%;max-width:780px;height:auto;border-radius:10px;border:1px solid var(--line);margin:0 0 22px}
 .topline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
 .topline .cnt{font-size:13px;color:var(--muted)}
 .lead{color:var(--muted);font-size:14px;margin:0 0 26px;max-width:70ch;line-height:1.85}
@@ -148,7 +149,6 @@ main{flex:1;min-width:0;padding:30px 40px 100px}
 <body>
 <div class="wrap">
   <aside>
-    <img src="cover.svg" alt="HowToCollege 大学生生活指南" class="cover" width="246" height="98">
     <div class="tag" style="margin-top:14px">133 篇 · 遇到事查一条</div>
 
     <div class="grp">
@@ -169,6 +169,7 @@ main{flex:1;min-width:0;padding:30px 40px 100px}
 
   <main>
     <div id="browse">
+      <img src="cover.png" alt="HowToCollege 大学生生活指南" class="hero">
       <div class="topline">
         <span class="cnt" id="count"></span>
       </div>

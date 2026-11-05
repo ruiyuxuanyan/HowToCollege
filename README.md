@@ -1,4 +1,4 @@
-![HowToCollege 大学生生活指南](site/cover.svg)
+![HowToCollege 大学生生活指南](site/cover.png)
 
 # HowToCollege · 大学生生活指南
 
