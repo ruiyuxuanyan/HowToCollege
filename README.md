@@ -1,4 +1,4 @@
-# 大学生生活指南
+# HowToCollege · 大学生生活指南
 
 > 一份写给中国大陆大学生的开源生活知识库。
 >
@@ -144,7 +144,7 @@
 - 涉及具体纠纷，请咨询执业律师、医生或对应主管部门，不要仅凭本文档行动
 - 【经验】标记的内容来自个人分享，**不代表普遍情况**，请自行判断
 
-发现问题请[开 issue](https://github.com/your-org/college-student-guide/issues)，我们会尽快核实。
+发现问题请[开 issue](https://github.com/ruiyuxuanyan/HowToCollege/issues)，我们会尽快核实。
 
 ## 许可
 
