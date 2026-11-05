@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大学生生活指南 · 128 篇</title>
+<meta name="description" content="面向中国大陆大学生的开源知识库，128 篇。每条标注来源等级与核查日期，区分国家规定与各校做法。">
+<style>
+:root{
+  --bg:#fbfaf8; --panel:#fff; --ink:#1c1b19; --muted:#6b6862; --line:#e6e2db;
+  --accent:#2f6f4f; --accent-soft:#eaf2ed; --warn:#a8611f; --warn-soft:#fdf3e7;
+  --law:#1d5f8a; --lawbg:#e8f1f7; --off:#2f6f4f; --offbg:#eaf2ed;
+  --exp:#7a5c9e; --expbg:#f2edf8; --pend:#a8611f; --pendbg:#fdf3e7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:15px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.wrap{display:flex;max-width:1400px;margin:0 auto;min-height:100vh}
+
+/* 侧栏 */
+aside{
+  width:290px;flex:0 0 290px;padding:28px 22px 60px;
+  border-right:1px solid var(--line);background:var(--panel);
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+aside h1{font-size:19px;margin:0 0 4px;letter-spacing:.02em}
+aside .tag{font-size:12px;color:var(--muted);margin-bottom:22px}
+
+.grp{margin-bottom:26px}
+.grp>.lbl{font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:9px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{
+  font-size:13px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;
+  background:#fff;color:var(--ink);cursor:pointer;user-select:none;transition:.14s;
+}
+.chip:hover{border-color:#c9c2b6}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.clear{color:var(--muted)}
+
+.catlist{display:flex;flex-direction:column;gap:2px}
+.cat{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:7px 9px;border-radius:7px;cursor:pointer;font-size:13.5px;
+}
+.cat:hover{background:#f4f1ec}
+.cat.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.cat .n{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.cat.on .n{color:var(--accent)}
+
+/* 主区 */
+main{flex:1;min-width:0;padding:30px 40px 100px}
+.topline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.topline .cnt{font-size:13px;color:var(--muted)}
+.lead{color:var(--muted);font-size:14px;margin:0 0 26px;max-width:70ch;line-height:1.85}
+
+/* 搜索 */
+.search{position:relative;margin-bottom:22px;max-width:560px}
+.search input{
+  width:100%;padding:11px 40px 11px 15px;border:1px solid var(--line);border-radius:10px;
+  font-size:14.5px;background:#fff;color:var(--ink);font-family:inherit;
+}
+.search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.search .kbd{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 5px;
+}
+
+/* 条目 */
+.list{display:flex;flex-direction:column;gap:10px}
+.item{
+  background:var(--panel);border:1px solid var(--line);border-radius:11px;
+  padding:16px 18px;cursor:pointer;transition:.14s;
+}
+.item:hover{border-color:#cfc8bc;box-shadow:0 2px 10px rgba(60,50,35,.05)}
+.item .h{display:flex;gap:11px;align-items:baseline}
+.item .id{
+  font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;
+  flex:0 0 auto;padding-top:3px;
+}
+.item .t{font-size:15.5px;font-weight:600;line-height:1.5;flex:1}
+.item .s{color:var(--muted);font-size:13.5px;margin:7px 0 0 34px;line-height:1.7}
+.item .m{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0 34px}
+
+.badge{font-size:11.5px;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.b-law{background:var(--lawbg);color:var(--law)}
+.b-off{background:var(--offbg);color:var(--off)}
+.b-exp{background:var(--expbg);color:var(--exp)}
+.b-pend{background:var(--pendbg);color:var(--pend)}
+.b-cat{background:#f2efe9;color:#6b6862}
+
+.empty{padding:60px 0;text-align:center;color:var(--muted)}
+
+/* 阅读页 */
+.reader{display:none}
+.reader.on{display:block}
+.back{
+  display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--muted);
+  cursor:pointer;margin-bottom:20px;
+}
+.back:hover{color:var(--accent)}
+.reader h2{font-size:25px;line-height:1.45;margin:0 0 12px;font-weight:700}
+.reader .lead2{
+  color:var(--muted);font-size:14.5px;border-left:3px solid var(--accent);
+  padding-left:14px;margin:0 0 26px;line-height:1.8;
+}
+.md{max-width:74ch;font-size:15.5px}
+.md h1,.md h2{font-size:20px;margin:34px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line);font-weight:650}
+.md h3{font-size:16.5px;margin:24px 0 9px;font-weight:640}
+.md h4{font-size:15px;margin:18px 0 7px}
+.md p{margin:11px 0}
+.md ul,.md ol{margin:11px 0;padding-left:23px}
+.md li{margin:5px 0}
+.md blockquote{
+  margin:14px 0;padding:11px 16px;background:#f6f3ee;border-left:3px solid var(--line);
+  color:#44403a;border-radius:0 7px 7px 0;font-size:14.5px;
+}
+.md code{
+  background:#f2efe9;padding:1.5px 5px;border-radius:4px;font-size:13px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+.md pre{background:#f6f3ee;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.65}
+.md pre code{background:none;padding:0}
+.md table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+.md th{background:#f6f3ee;font-weight:640;white-space:nowrap}
+.md tr:nth-child(even) td{background:#fcfbf9}
+.md hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+.md strong{font-weight:660}
+
+.foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+
+@media(max-width:900px){
+  .wrap{flex-direction:column}
+  aside{width:100%;flex:none;height:auto;position:static;border-right:none;border-bottom:1px solid var(--line);padding:20px 18px}
+  main{padding:22px 18px 70px}
+  .reader h2{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <h1>大学生生活指南</h1>
+    <div class="tag">128 篇 · 遇到事查一条</div>
+
+    <div class="grp">
+      <div class="lbl">我的阶段</div>
+      <div class="chips" id="stage"></div>
+    </div>
+
+    <div class="grp">
+      <div class="lbl">关注什么</div>
+      <div class="chips" id="topic"></div>
+    </div>
+
+    <div class="grp">
+      <div class="lbl">章节</div>
+      <div class="catlist" id="cats"></div>
+    </div>
+  </aside>
+
+  <main>
+    <div id="browse">
+      <div class="topline">
+        <span class="cnt" id="count"></span>
+      </div>
+      <p class="lead">
+        不用全读。挑眼下需要的那一两条就够了，剩下的放着，需要时再回来查。
+        每条都标了来源等级和核查日期；各地各校规定不一样的，会写清以当地为准；查不到的，直接说查不到。
+      </p>
+
+      <div class="search">
+        <input id="q" type="search" placeholder="搜标题、内容关键词，比如「欠薪」「医保」「档案」" autocomplete="off">
+        <span class="kbd">/</span>
+      </div>
+
+      <div class="list" id="list"></div>
+    </div>
+
+    <div class="reader" id="reader">
+      <div class="back" id="back">← 返回列表</div>
+      <h2 id="rtitle"></h2>
+      <p class="lead2" id="rlead"></p>
+      <div class="md" id="rbody"></div>
+      <div class="foot" id="rfoot"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const STAGES = [
+  {k:"新生", label:"准大学生 / 新生"},
+  {k:"在校", label:"在校中"},
+  {k:"毕业", label:"应届 / 毕业"},
+];
+const TOPICS = [
+  {k:"缺钱", label:"钱的事"},
+];
+
+let INDEX = null;
+const BODIES = {};
+const state = { stage:null, topic:null, cat:null, q:"" };
+// 全文搜索缓存：id -> 纯文本（首次搜索时才加载）
+let FULLTEXT = null;
+let loadingFull = false;
+
+const $ = (s)=>document.querySelector(s);
+const esc = (s)=>s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+async function boot(){
+  INDEX = await (await fetch("index.json", {cache:"no-cache"})).json();
+  $("#count").textContent = `共 ${INDEX.total} 篇`;
+  renderChips();
+  renderCats();
+  render();
+}
+
+function renderChips(){
+  $("#stage").innerHTML = STAGES.map(s=>{
+    const on = state.stage===s.k ? " on" : "";
+    return `<span class="chip${on}" data-t="stage" data-k="${s.k}">${s.label}</span>`;
+  }).join("") + `<span class="chip clear" data-clear="stage">不限</span>`;
+
+  $("#topic").innerHTML = TOPICS.map(s=>{
+    const on = state.topic===s.k ? " on" : "";
+    return `<span class="chip${on}" data-t="topic" data-k="${s.k}">${s.label}</span>`;
+  }).join("") + `<span class="chip clear" data-clear="topic">不限</span>`;
+}
+
+function renderCats(){
+  const all = `<div class="cat${state.cat?"":" on"}" data-cat=""><span>全部章节</span><span class="n">${INDEX.total}</span></div>`;
+  $("#cats").innerHTML = all + INDEX.categories.map(c=>{
+    const on = state.cat===c.id ? " on" : "";
+    return `<div class="cat${on}" data-cat="${c.id}"><span>${esc(c.name)}</span><span class="n">${c.count}</span></div>`;
+  }).join("");
+}
+
+async function ensureFulltext(){
+  if(FULLTEXT || loadingFull) return;
+  loadingFull = true;
+  $("#count").textContent = "正在载入全文索引…";
+  const cats = INDEX.categories.map(c=>c.id);
+  const loaded = await Promise.all(cats.map(async id=>{
+    if(!BODIES[id]) BODIES[id] = await (await fetch(`body/${id}.json`,{cache:"no-cache"})).json();
+    return [id, BODIES[id]];
+  }));
+  FULLTEXT = {};
+  for(const [id, map] of loaded){
+    for(const [aid, body] of Object.entries(map)){
+      // 去掉 Markdown 符号，只留文字，便于匹配
+      FULLTEXT[aid] = body.replace(/[#*>`|\-\[\]()]/g," ").replace(/\s+/g,"");
+    }
+  }
+  loadingFull = false;
+}
+
+function filtered(){
+  const q = state.q.trim().toLowerCase();
+  const searching = q.length > 0;
+  return INDEX.articles.filter(a=>{
+    if(!searching){
+      if(state.stage && !a.tags.includes(state.stage)) return false;
+      if(state.topic && !a.tags.includes(state.topic)) return false;
+      if(state.cat && a.cat!==state.cat) return false;
+      return true;
+    }
+    // 搜索：标题/概括/阶段 优先，其次正文全文
+    const meta = (a.title+" "+a.summary+" "+a.catName+" "+(a.audience||"")).toLowerCase();
+    if(meta.includes(q)) return true;
+    const ft = FULLTEXT && FULLTEXT[a.id];
+    return !!(ft && ft.toLowerCase().includes(q));
+  });
+}
+
+function render(){
+  const list = filtered();
+  $("#count").textContent = state.q
+    ? `找到 ${list.length} 篇`
+    : (state.cat||state.stage||state.topic ? `筛选出 ${list.length} 篇 / 共 ${INDEX.total} 篇` : `共 ${INDEX.total} 篇`);
+
+  if(!list.length){
+    const hint = state.q
+      ? `没有包含「${esc(state.q)}」的条目。<br>换个词试试，或者<a href="#" id="clearq">清空搜索</a>看看全部。`
+      : `没有符合条件的条目。<br>换个筛选，或者<a href="#" id="clearsel">取消筛选</a>。`;
+    $("#list").innerHTML = `<div class="empty">${hint}</div>`;
+    return;
+  }
+
+  $("#list").innerHTML = list.map(a=>{
+    const b=[];
+    if(a.sources.law) b.push(`<span class="badge b-law">法规 ${a.sources.law}</span>`);
+    if(a.sources.official) b.push(`<span class="badge b-off">官方 ${a.sources.official}</span>`);
+    if(a.sources.pending) b.push(`<span class="badge b-pend">待核实 ${a.sources.pending}</span>`);
+    b.push(`<span class="badge b-cat">${esc(a.catName.split("-")[1])}</span>`);
+    return `<div class="item" data-id="${a.id}">
+      <div class="h"><span class="id">${a.id}</span><span class="t">${esc(a.title)}</span></div>
+      ${a.summary?`<div class="s">${esc(a.summary)}</div>`:""}
+      <div class="m">${b.join("")}</div>
+    </div>`;
+  }).join("");
+}
+
+async function open(id){
+  const a = INDEX.articles.find(x=>x.id===id);
+  if(!a) return;
+  if(!BODIES[a.cat]){
+    BODIES[a.cat] = await (await fetch(`body/${a.cat}.json`, {cache:"no-cache"})).json();
+  }
+  $("#browse").style.display="none";
+  $("#reader").classList.add("on");
+  $("#rtitle").textContent = a.title;
+  $("#rlead").textContent = a.summary || "";
+  $("#rbody").innerHTML = mdToHtml(BODIES[a.cat][a.id] || "");
+  $("#rfoot").innerHTML = `来源标注：法规 ${a.sources.law} · 官方 ${a.sources.official} · 经验 ${a.sources.experience} · 待核实 ${a.sources.pending}`;
+  window.scrollTo(0,0);
+  location.hash = id;
+}
+
+function close(){
+  $("#reader").classList.remove("on");
+  $("#browse").style.display="";
+  location.hash = "";
+  window.scrollTo(0,0);
+}
+
+/* 极简 Markdown 渲染：标题/列表/表格/引用/代码/行内格式 */
+function mdToHtml(src){
+  const lines = src.split(/\r?\n/);
+  let out=[], i=0;
+  const inline = (s)=> esc(s)
+    .replace(/`([^`]+)`/g,"<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g,(m,tx,u)=>{
+      const url = u.startsWith("http") ? u : "../"+u;
+      return `<a href="${url}" target="_blank" rel="noopener">${tx}</a>`;
+    });
+
+  while(i<lines.length){
+    let L = lines[i];
+
+    if(/^\s*$/.test(L)){ i++; continue; }
+
+    // 代码块
+    if(/^```/.test(L)){
+      const buf=[]; i++;
+      while(i<lines.length && !/^```/.test(lines[i])){ buf.push(lines[i]); i++; }
+      i++;
+      out.push(`<pre><code>${esc(buf.join("\n"))}</code></pre>`);
+      continue;
+    }
+
+    // 标题
+    const h = L.match(/^(#{1,6})\s+(.*)$/);
+    if(h){ out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`); i++; continue; }
+
+    // 分隔线
+    if(/^---+$/.test(L.trim())){ out.push("<hr>"); i++; continue; }
+
+    // 表格
+    if(/^\|/.test(L) && i+1<lines.length && /^\|[\s\-:|]+\|?$/.test(lines[i+1])){
+      const rows=[];
+      const parse = (r)=> r.replace(/^\||\|$/g,"").split("|").map(c=>c.trim());
+      const head = parse(L); i+=2;
+      while(i<lines.length && /^\|/.test(lines[i])){ rows.push(parse(lines[i])); i++; }
+      out.push("<table><thead><tr>"+head.map(c=>`<th>${inline(c)}</th>`).join("")+"</tr></thead><tbody>"+
+        rows.map(r=>"<tr>"+r.map(c=>`<td>${inline(c)}</td>`).join("")+"</tr>").join("")+"</tbody></table>");
+      continue;
+    }
+
+    // 引用
+    if(/^>\s?/.test(L)){
+      const buf=[];
+      while(i<lines.length && /^>\s?/.test(lines[i])){ buf.push(lines[i].replace(/^>\s?/,"")); i++; }
+      out.push(`<blockquote>${buf.map(b=>inline(b)).join("<br>")}</blockquote>`);
+      continue;
+    }
+
+    // 列表
+    if(/^\s*[-*+]\s+/.test(L) || /^\s*\d+[.)]\s+/.test(L)){
+      const ordered = /^\s*\d+[.)]\s+/.test(L);
+      const buf=[];
+      while(i<lines.length && (/^\s*[-*+]\s+/.test(lines[i]) || /^\s*\d+[.)]\s+/.test(lines[i]))){
+        buf.push(lines[i].replace(/^\s*(?:[-*+]|\d+[.)])\s+/,"")); i++;
+      }
+      const tag = ordered?"ol":"ul";
+      out.push(`<${tag}>`+buf.map(b=>`<li>${inline(b)}</li>`).join("")+`</${tag}>`);
+      continue;
+    }
+
+    // 段落
+    const buf=[];
+    while(i<lines.length && !/^\s*$/.test(lines[i]) && !/^[#>|`]|^\s*[-*+]\s|^\s*\d+[.)]\s|^---+$/.test(lines[i])){
+      buf.push(lines[i]); i++;
+    }
+    if(buf.length) out.push(`<p>${inline(buf.join(" "))}</p>`);
+    else i++;
+  }
+  return out.join("\n");
+}
+
+// 事件
+document.addEventListener("click", e=>{
+  const chip = e.target.closest(".chip");
+  if(chip){
+    if(chip.dataset.clear){ state[chip.dataset.clear]=null; }
+    else{
+      const t=chip.dataset.t, k=chip.dataset.k;
+      state[t] = state[t]===k ? null : k;
+    }
+    renderChips(); render(); return;
+  }
+  const cat = e.target.closest(".cat");
+  if(cat){ state.cat = cat.dataset.cat || null; renderCats(); render(); return; }
+
+  const item = e.target.closest(".item");
+  if(item){ open(item.dataset.id); return; }
+
+  if(e.target.closest("#clearq")){ e.preventDefault(); $("#q").value=""; state.q=""; render(); return; }
+  if(e.target.closest("#clearsel")){ e.preventDefault(); state.stage=null; state.topic=null; state.cat=null; renderChips(); renderCats(); render(); return; }
+
+  if(e.target.closest("#back")) close();
+});
+
+let qTimer = null;
+$("#q").addEventListener("input", e=>{
+  state.q = e.target.value;
+  clearTimeout(qTimer);
+  const q = state.q.trim();
+  // 需要全文搜索时，先确保索引就绪
+  if(q.length >= 2 && !FULLTEXT){
+    qTimer = setTimeout(async ()=>{ await ensureFulltext(); render(); }, 260);
+    render();   // 先按标题/概括出一次结果
+    return;
+  }
+  qTimer = setTimeout(render, 120);
+});
+document.addEventListener("keydown", e=>{
+  if(e.key==="/" && document.activeElement!==$("#q")){ e.preventDefault(); $("#q").focus(); }
+  if(e.key==="Escape"){ if($("#reader").classList.contains("on")) close(); else $("#q").blur(); }
+});
+
+boot().then(()=>{
+  const id = location.hash.replace("#","");
+  if(id && INDEX.articles.some(a=>a.id===id)) open(id);
+});
+</script>
+</body>
+</html>

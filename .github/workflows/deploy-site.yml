@@ -1,0 +1,63 @@
+name: Build and deploy site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "01-*/**"
+      - "02-*/**"
+      - "03-*/**"
+      - "04-*/**"
+      - "05-*/**"
+      - "06-*/**"
+      - "07-*/**"
+      - "08-*/**"
+      - "09-*/**"
+      - "10-*/**"
+      - "11-*/**"
+      - "tools/build-site.mjs"
+      - "site/index.html"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate site data
+        run: node tools/build-site.mjs
+
+      - name: Verify output
+        run: |
+          test -f site/index.html
+          test -f site/index.json
+          ls site/body | wc -l
+          node -e "const d=require('./site/index.json'); if(d.total!==128) { console.error('文章数不是 128：'+d.total); process.exit(1); } console.log('OK', d.total, '篇');"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

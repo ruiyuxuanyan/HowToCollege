@@ -1,0 +1,8 @@
+# 站点构建产物（由 tools/build-site.mjs 生成，CI 里现算）
+site/index.json
+site/body/
+
+# 本地临时文件
+*.log
+.DS_Store
+Thumbs.db
