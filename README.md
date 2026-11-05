@@ -172,5 +172,3 @@ college-student-guide/
 ---
 
 **如果这份指南帮你避开了一个坑，欢迎回来补充一条你的经历。**
-
-参考项目：[HowToLiveBetter](https://github.com/eternity4719/HowToLiveBetter)（高性价比人生指南）、[HowToCook](https://github.com/Anduin2017/HowToCook)（程序员做饭指南）
