@@ -57,7 +57,9 @@
 
 ## 这是什么
 
-一份放在 GitHub 上的 **Markdown 知识库**，不是网站，不是 App。
+一份放在 GitHub 上的 **Markdown 知识库**。
+
+不做 App / 小程序 / 账号 / 后端；在线站是同一份 Markdown 的静态渲染视图，由 CI 自动重建——**内容只有 Markdown 这一个源，站点不是另一个版本，也不需要单独维护。**
 
 你可以直接在这里读，也可以 clone 下来离线看，还可以 fork 一份自己改。
 
@@ -83,7 +85,7 @@
 
 ## 它不做什么
 
-- ❌ 不做网站、不做 App、不做小程序（纯 Markdown，零维护成本）
+- ❌ 不做 App、小程序、账号、后端（内容是纯 Markdown；在线站只是它的静态渲染视图，由 CI 自动重建，不额外增加维护成本）
 - ❌ 不做考研考公留学的备考资料
 - ❌ 不做高校排名和择校推荐
 - ❌ 不替你做决定，只把每个选项的代价讲清楚
@@ -325,6 +327,7 @@ college-student-guide/
 ├── tools/                 # 构建与校验脚本
 │   ├── build-site.mjs     # 生成 index.json、body/、sitemap.xml、robots.txt，并校准首页篇数
 │   ├── check-structure.js # 校验 140 篇的 9 项必备结构、来源标记、字数
+│   ├── check-links.js     # 探测全库外部链接，反爬站点不算失败
 │   ├── sync-numbers.js    # 现算全库数字，重写 README 徽章与口径说明
 │   └── gen-pending.js     # 生成 docs/待核实清单.md
 └── docs/                  # 项目规划与写作规范

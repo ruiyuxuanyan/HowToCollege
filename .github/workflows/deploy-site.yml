@@ -48,6 +48,10 @@ jobs:
       - name: Check article structure
         run: node tools/check-structure.js
 
+      - name: Check external links
+        continue-on-error: true
+        run: node tools/check-links.js
+
       - name: Verify output
         run: |
           test -f site/index.html
