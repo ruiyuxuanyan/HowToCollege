@@ -15,8 +15,12 @@ on:
       - "09-*/**"
       - "10-*/**"
       - "11-*/**"
-      - "tools/build-site.mjs"
+      - "12-*/**"
+      - "tools/**"
       - "site/index.html"
+      - "site/sitemap.xml"
+      - "site/robots.txt"
+      - ".github/workflows/deploy-site.yml"
   workflow_dispatch:
 
 permissions:
@@ -41,11 +45,16 @@ jobs:
       - name: Generate site data
         run: node tools/build-site.mjs
 
+      - name: Check article structure
+        run: node tools/check-structure.js
+
       - name: Verify output
         run: |
           test -f site/index.html
           test -f site/index.json
           test -f site/cover.png
+          test -f site/sitemap.xml
+          test -f site/robots.txt
           echo "分类包数量：$(ls site/body | wc -l)"
           node -e "
             const fs = require('fs');
@@ -63,6 +72,21 @@ jobs:
             if (noSummary) problems.push(noSummary + ' 篇缺一句话概括');
             if (problems.length) { console.error('构建校验失败：\n  ' + problems.join('\n  ')); process.exit(1); }
             console.log('OK · ' + d.total + ' 篇 · ' + d.categories.length + ' 个分类');
+          "
+
+      - name: Verify homepage count
+        run: |
+          node -e "
+            const fs = require('fs');
+            const d = require('./site/index.json');
+            const h = fs.readFileSync('site/index.html', 'utf8');
+            const title = (h.match(/<title>[^<]*· (\\d+) 篇<\\/title>/) || [])[1];
+            const tag = (h.match(/class=\"tag\"[^>]*>(\\d+) 篇 · 遇到事查一条/) || [])[1];
+            let bad = 0;
+            if (String(d.total) !== title) { console.error('首页 title 写 ' + title + '，实际 ' + d.total); bad = 1; }
+            if (String(d.total) !== tag) { console.error('首页角标写 ' + tag + '，实际 ' + d.total); bad = 1; }
+            if (bad) process.exit(1);
+            console.log('首页篇数一致：' + d.total);
           "
 
       - uses: actions/upload-pages-artifact@v3

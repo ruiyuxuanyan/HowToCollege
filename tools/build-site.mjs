@@ -105,8 +105,68 @@ for (const [catNum, map] of Object.entries(bodies)) {
   fs.writeFileSync(path.join(OUT_DIR, "body", catNum + ".json"), JSON.stringify(map), "utf8");
 }
 
+// ── site/index.html：把标题、meta、角标里的篇数改成真实值 ───────────────
+// index.html 是手写的静态壳（不由此脚本生成），但篇数是会变的，
+// 曾经出现「线上写着 133 篇、实际 140 篇」的情况，所以每次构建都校准一遍。
+const htmlPath = path.join(OUT_DIR, "index.html");
+let htmlSynced = 0;
+if (fs.existsSync(htmlPath)) {
+  const before = fs.readFileSync(htmlPath, "utf8");
+  const after = before
+    .replace(/(<title>[^<]*· )\d+( 篇<\/title>)/, `$1${meta.length}$2`)
+    .replace(/(开源知识库，)\d+( 篇。)/, `$1${meta.length}$2`)
+    .replace(/(class="tag"[^>]*>)\d+( 篇 · 遇到事查一条)/, `$1${meta.length}$2`);
+  if (after !== before) {
+    fs.writeFileSync(htmlPath, after, "utf8");
+    htmlSynced = 1;
+  }
+  // 校准失败要炸，不能静默留下错数字
+  for (const [re, what] of [
+    [new RegExp(`<title>[^<]*· ${meta.length} 篇</title>`), "title"],
+    [new RegExp(`开源知识库，${meta.length} 篇。`), "meta description"],
+    [new RegExp(`class="tag"[^>]*>${meta.length} 篇 · 遇到事查一条`), "首页角标"],
+  ]) {
+    if (!re.test(after)) {
+      console.error(`构建校验失败：site/index.html 的${what}未能校准为 ${meta.length} 篇`);
+      process.exit(1);
+    }
+  }
+} else {
+  console.error("构建校验失败：找不到 site/index.html");
+  process.exit(1);
+}
+
+// ── sitemap.xml / robots.txt ────────────────────────────────────────────
+// 站点是 hash 路由（#07-14），锚点不会成为独立 URL，所以 sitemap 只列首页。
+const SITE_URL = "https://ruiyuxuanyan.github.io/HowToCollege/";
+const today = new Date().toISOString().slice(0, 10);
+fs.writeFileSync(
+  path.join(OUT_DIR, "sitemap.xml"),
+  `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${SITE_URL}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+`,
+  "utf8",
+);
+fs.writeFileSync(
+  path.join(OUT_DIR, "robots.txt"),
+  `User-agent: *
+Allow: /
+
+Sitemap: ${SITE_URL}sitemap.xml
+`,
+  "utf8",
+);
+
 const kb = (n) => (n / 1024).toFixed(1) + " KB";
 console.log(`分类 ${categories.length} · 文章 ${meta.length}`);
+console.log(`site/index.html 篇数已校准${htmlSynced ? "（有改动）" : "（无需改动）"} · sitemap.xml · robots.txt`);
 console.log(`index.json ${kb(fs.statSync(path.join(OUT_DIR, "index.json")).size)}`);
 console.log(`来源 法规 ${stats.law} · 官方 ${stats.official} · 经验 ${stats.experience} · 待核实 ${stats.pending}`);
 const bad = meta.filter((a) => !a.title || !a.summary);

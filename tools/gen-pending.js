@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = "D:/dsh-workspace/college-student-guide";
+const ROOT = path.resolve(__dirname, "..");
 const CATS = fs
   .readdirSync(ROOT)
   .filter((d) => /^\d\d-/.test(d) && fs.statSync(path.join(ROOT, d)).isDirectory())
