@@ -37,6 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # 核查日期检查要读每个文件的最后一次提交日期，浅克隆拿不到历史
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -47,6 +50,9 @@ jobs:
 
       - name: Check article structure
         run: node tools/check-structure.js
+
+      - name: Check verification dates
+        run: node tools/check-dates.js
 
       - name: Check external links
         continue-on-error: true
