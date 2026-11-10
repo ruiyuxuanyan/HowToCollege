@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>大学生生活指南 · 139 篇</title>
 <meta name="description" content="面向中国大陆大学生的开源知识库，139 篇。每条标注来源等级与核查日期，区分国家规定与各校做法。">
+<link rel="canonical" href="https://ruiyuxuanyan.github.io/HowToCollege/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="大学生活指南">
+<meta property="og:title" content="大学生活指南 · 139 篇">
+<meta property="og:description" content="大学里没人系统教、却迟早用得上的事。139 篇，每条标注来源等级与核查日期，区分国家规定与各校做法。">
+<meta property="og:url" content="https://ruiyuxuanyan.github.io/HowToCollege/">
+<meta property="og:image" content="https://ruiyuxuanyan.github.io/HowToCollege/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="大学生活指南 · 139 篇">
+<meta name="twitter:description" content="大学里没人系统教、却迟早用得上的事。139 篇，每条标注来源等级与核查日期。">
+<meta name="twitter:image" content="https://ruiyuxuanyan.github.io/HowToCollege/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232f6f4f'/><path d='M28 34h44M28 50h44M28 66h28' stroke='%23fbfaf8' stroke-width='8' stroke-linecap='round'/></svg>">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"大学生活指南","alternateName":"HowToCollege","url":"https://ruiyuxuanyan.github.io/HowToCollege/","inLanguage":"zh-CN","description":"面向中国大陆大学生的开源知识库，139 篇，每条标注来源等级与核查日期。","license":"https://creativecommons.org/licenses/by/4.0/"}
+</script>
 <style>
 :root{
   --bg:#fbfaf8; --panel:#fff; --ink:#1c1b19; --muted:#6b6862; --line:#e6e2db;
@@ -96,6 +114,8 @@ main{flex:1;min-width:0;padding:30px 40px 100px}
 .b-exp{background:var(--expbg);color:var(--exp)}
 .b-pend{background:var(--pendbg);color:var(--pend)}
 .b-cat{background:#f2efe9;color:#6b6862}
+.b-open{background:var(--accent-soft);color:var(--accent);text-decoration:none}
+.b-open:hover{text-decoration:underline}
 
 .empty{padding:60px 0;text-align:center;color:var(--muted)}
 
@@ -304,7 +324,7 @@ function render(){
     return `<div class="item" data-id="${a.id}">
       <div class="h"><span class="id">${a.id}</span><span class="t">${esc(a.title)}</span></div>
       ${a.summary?`<div class="s">${esc(a.summary)}</div>`:""}
-      <div class="m">${b.join("")}</div>
+      <div class="m">${b.join("")}<a class="badge b-open" href="a/${a.id}.html" onclick="event.stopPropagation()" target="_blank" rel="noopener">独立页 ↗</a></div>
     </div>`;
   }).join("");
 }

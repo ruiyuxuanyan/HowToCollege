@@ -1,8 +1,11 @@
-# 站点构建产物（由 tools/build-site.mjs 生成，CI 里现算）
+# 站点构建产物（由 tools/ 里的脚本生成，CI 里现算）
 site/index.json
 site/body/
+site/a/
 
-# 本地临时文件
+# og.png 与 cover.png 要进仓库：CI 的 Linux runner 没有 Chrome，
+# 生成不出来，缺图会让分享卡片失效。本地改了重新跑 tools/build-social.mjs 再提交。
+.og-tmp/
 *.log
 .DS_Store
 Thumbs.db

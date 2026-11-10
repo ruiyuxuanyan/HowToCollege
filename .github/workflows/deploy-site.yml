@@ -48,11 +48,20 @@ jobs:
       - name: Generate site data
         run: node tools/build-site.mjs
 
+      - name: Generate social cards
+        run: node tools/build-social.mjs
+
+      - name: Generate per-article pages
+        run: node tools/build-pages.mjs
+
       - name: Check article structure
         run: node tools/check-structure.js
 
       - name: Check verification dates
         run: node tools/check-dates.js
+
+      - name: Check article pages
+        run: node tools/check-pages.mjs
 
       - name: Check external links
         continue-on-error: true
@@ -65,6 +74,8 @@ jobs:
           test -f site/cover.png
           test -f site/sitemap.xml
           test -f site/robots.txt
+          test -f site/og.png
+          test -d site/a
           echo "分类包数量：$(ls site/body | wc -l)"
           node -e "
             const fs = require('fs');

@@ -137,7 +137,8 @@ if (fs.existsSync(htmlPath)) {
 }
 
 // ── sitemap.xml / robots.txt ────────────────────────────────────────────
-// 站点是 hash 路由（#07-14），锚点不会成为独立 URL，所以 sitemap 只列首页。
+// 每篇文章现在有独立静态页（tools/build-pages.mjs 生成到 site/a/），
+// sitemap 由那个脚本输出全量 140 条，这里只兜底写一个最小版本。
 const SITE_URL = "https://ruiyuxuanyan.github.io/HowToCollege/";
 const today = new Date().toISOString().slice(0, 10);
 fs.writeFileSync(
