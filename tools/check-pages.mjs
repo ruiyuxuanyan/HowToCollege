@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT = "D:/dsh-workspace/college-student-guide";
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const A = path.join(ROOT, "site", "a");
 
 const files = fs.readdirSync(A).filter((f) => f.endsWith(".html"));
