@@ -11,13 +11,23 @@ const ROOT = path.resolve(__dirname, "..");
 function git(args) {
   return execFileSync("git", ["-C", ROOT, ...args], {
     encoding: "utf8",
-    stdio: ["ignore", "pipe", "ignore"],
+    stdio: ["ignore", "pipe", "pipe"],
   }).trim();
 }
 
+// 有 .git 目录 = 这是个 git 仓库，此时「找不到 git 命令」必须报错。
+// 之前这里一律静默跳过，结果 git 从 PATH 里消失时检查直接通过，
+// 门禁形同虚设（本机就真的这样失败过一次）。
+const hasGitDir = fs.existsSync(path.join(ROOT, ".git"));
 try {
   git(["rev-parse", "--is-inside-work-tree"]);
 } catch (e) {
+  const notFound = e.code === "ENOENT" || /not found|ENOENT/i.test(String(e.message));
+  if (hasGitDir && notFound) {
+    console.error("✗ 这是个 git 仓库，但找不到 git 命令。");
+    console.error("  核查日期检查依赖 git 历史，不能跳过——请把 git 放进 PATH 后重跑。");
+    process.exit(1);
+  }
   console.log("（跳过核查日期检查：当前目录不是 git 仓库）");
   process.exit(0);
 }

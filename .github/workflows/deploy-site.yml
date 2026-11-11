@@ -17,6 +17,7 @@ on:
       - "11-*/**"
       - "12-*/**"
       - "tools/**"
+      - "promo/**"
       - "site/index.html"
       - "site/sitemap.xml"
       - "site/robots.txt"
@@ -62,6 +63,9 @@ jobs:
 
       - name: Check article pages
         run: node tools/check-pages.mjs
+
+      - name: Check promo drafts
+        run: node tools/check-promo.mjs
 
       - name: Check external links
         continue-on-error: true
