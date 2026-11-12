@@ -12,6 +12,59 @@
 
 ---
 
+## 2026-11-12 · 修 CI 红灯，并把所有 Action 升到 Node 24 版本
+
+### [两个报错，其实是一件事]
+
+邮件里的「两个报错」是**同一次运行**（#19，提交 7ee9ab1）的两条记录：
+
+| 报错 | 真实含义 |
+| --- | --- |
+| build failed in 11 seconds | 第 9 步 `Check article pages` 挂了 |
+| deploy skipped | 上游 build 失败，部署自然不执行——**这不是独立故障，是级联结果** |
+
+### [根因：路径写死成 Windows 绝对路径]
+
+`check-pages.mjs` 里写的是：
+
+```js
+const ROOT = "D:/dsh-workspace/college-student-guide";
+```
+
+本地跑得好好的，因为那个目录真的存在。ubuntu runner 上没有 `D:\` 盘，`readdirSync` 直接抛 ENOENT，进程退出码 1。
+
+**已在 #20 修复**（改成 `path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")`），所以你后来收到的 #20、#21 都是绿的。邮件是延迟到达的旧通知。
+
+**这次做了本地复现**：把 ROOT 换成一个不存在的路径重跑，精确复现了 `ENOENT ... scandir` 和退出码 1，确认这就是当时 CI 的失败原因。
+
+### [顺带修掉 Node 20 弃用警告]
+
+annotations 里一直有一条 `Node.js 20 is deprecated` 警告。查了各家 action 的实际运行时：
+
+| Action | 旧版本运行时 | 新版本运行时 |
+| --- | --- | --- |
+| actions/checkout | v4 → node20 | **v5 → node24** |
+| actions/setup-node | v4 → node20 | **v5 → node24** |
+| actions/upload-pages-artifact | v4 → composite（内部引 upload-artifact v4） | **v5**（内部引 v7.0.0） |
+| actions/deploy-pages | v4 → node20 | **v5 → node24** |
+
+四个都升到 node24 版本，警告消除。
+
+同时把 `node-version` 从 20.19 提到 22（LTS）。20 已进入弃用周期，22 是目前稳定选择。
+
+### [教训]
+
+**「本地绿」不等于「CI 绿」**，只要脚本里有任何绝对路径。这类 bug 的特征是：本地永远不复现，CI 永远 11 秒内挂掉。
+
+以后 `tools/` 下所有脚本一律用 `fileURLToPath(import.meta.url)` 或 `__dirname` 定位仓库根目录，不写死盘符。
+
+### [验证]
+
+- 本地按 CI 顺序完整跑一遍：build-site → build-social → build-pages → check-structure → check-dates → check-pages → check-promo，全部通过
+- 修复版脚本在任意工作目录下都能正确找到仓库根目录
+- workflow YAML 基础结构自检通过（无 Tab、uses 格式正确）
+
+
 ## 2026-11-11 · 5 篇知乎推广稿，附一个防「推广稿编法条」的门禁
 
 ### [背景]

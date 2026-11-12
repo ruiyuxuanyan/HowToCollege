@@ -37,14 +37,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # 核查日期检查要读每个文件的最后一次提交日期，浅克隆拿不到历史
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: "20.19"
+          node-version: "22"
 
       - name: Generate site data
         run: node tools/build-site.mjs
@@ -114,7 +114,7 @@ jobs:
             console.log('首页篇数一致：' + d.total);
           "
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
@@ -126,4 +126,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
